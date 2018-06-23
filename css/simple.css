@@ -1,0 +1,48 @@
+
+body {
+    background-color: #fffff8;
+    margin: 3px;
+}
+
+table {
+  width: 100%;
+}
+
+table, th, thead, tbody, td { border: 1px solid black; border-width: 1px; border-collapse:collapse;
+}
+
+th, thead { font-family: Arial, sans-serif; color: #0000ff; background-color: #a0ffa0;
+    font-weight: bold; font-size: 200%; border-width: 1px; border-color: black;
+    align: center; text-align: center;
+}
+
+td { font-family: Arial, sans-serif; font-size: 110%;
+    padding: 4px; border-width: 1px; border-color: black;
+    text-align: center; min-width: 18px; min-height: 10px; 
+}
+
+.roomName {
+  font-family: Arial, sans-serif;
+  font-size: 200%;
+}
+
+.onButton {
+  background-color: #44ff44;
+  font-size: 200%;
+  border-radius: 10px;
+  width: 40%;
+}
+
+.offButton {
+  background-color: #ff4444;
+  font-size: 200%;
+  border-radius: 10px;
+  width: 40%;
+}
+
+.sourceList {
+  background-color: #eeddcc;
+  font-size: 200%;
+  border-radius: 10px;
+  width: 60%;
+}

@@ -1,0 +1,145 @@
+<html>
+ <head>
+  <link rel="stylesheet" type="text/css" href="css/simple.css"></link>
+  <title>Our Yamaha Configuration Page</title>
+  <script src="js/jquery-3.3.1.min.js"></script>
+  <script>
+    // http://192.168.1.215/cgi-bin/tttt.py?zone=Zone_2&source=TUNER&state=Standby
+
+    function onOrOff( id, zone, state ){
+
+      var selector = document.getElementById( id );
+      var source = selector.options[ selector.selectedIndex ].value
+      console.log( "Changing " + zone + " to " + source + ", and " + state );
+
+      $.ajax( {
+        url: "/cgi-bin/yamaha.py",
+        type: "GET",
+        data: {
+          receiver: "192.168.1.218",
+          zone: zone,
+          source: source,
+          state: state
+        },
+
+        success: function( data ){
+          console.log( "success: " + data );
+        },
+
+        complete: function() {
+          console.log( "complete." );
+        },
+
+        error: function() {
+          alert( "Some sort of failure." );
+        }
+
+      } );
+    }
+
+    function test( on_or_off ){
+      alert( "testing!" );
+      $.ajax( {
+        url: "/cgi-bin/tttt.py",
+        type: "GET",
+        data: {
+          receiver: "192.168.1.218",
+          zone: "Zone_3",
+          source: "TUNER",
+          state: on_or_off
+        },
+        success: function( data ){
+          alert( "success: " + data );
+        },
+        complete: function() {
+          alert( "complete." );
+        },
+        error: function() {
+          alert( "Some sort of failure." );
+        }
+      } );
+    }
+
+  </script>
+ <head>
+ <body>
+  <!--
+  <p>This is some text</p>
+  <input type="button" onclick="test( 'On' );" value="Turn on radio"></input>
+  <input type="button" onclick="test( 'Standby' );" value="Turn off radio"></input>
+  -->
+  <table>
+   <thead>
+    <tr>
+     <td>Room</td>
+     <td>Source</td>
+     <!-- <td>Volume</td> -->
+     <td>On/Off</td>
+    </td>
+   </thead>
+
+   <!-- Living Room -->
+   <tr>
+    <td class="roomName">Living Room</td>
+    <td>
+     <select class="sourceList" id="livingRoom">
+      <option value="AV1" selected="selected">Television</option>
+      <option value="TUNER">Radio</option>
+      <option value="Pandora">Pandora</option>
+      <option value="AV3">Chromecast</option>
+      <option value="PHONO">Record Player</option>
+      <option value="AV2">DVD</option>
+      <option value="AUDIO1">CD</option>
+     </select>
+    </td>
+    <!-- <td>Volume</td> -->
+    <td>
+     <input class="onButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'On' );" value="On"></input>
+     <input class="offButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'Standby' );" value="Off"></input>
+    </td>
+   </tr>
+
+   <!-- Kitchen -->
+   <tr>
+    <td class="roomName">Kitchen</td>
+    <td>
+     <select class="sourceList" id="kitchen">
+      <option value="AV1">Television</option>
+      <option value="TUNER" selected="selected">Radio</option>
+      <option value="Pandora">Pandora</option>
+      <option value="AV3">Chromecast</option>
+      <option value="PHONO">Record Player</option>
+      <option value="AV2">DVD</option>
+      <option value="AUDIO1">CD</option>
+     </select>
+    </td>
+    <!-- <td>Volume</td> -->
+    <td>
+     <input class="onButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'On' );" value="On"></input>
+     <input class="offButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'Standby' );" value="Off"></input>
+    </td>
+   </tr>
+
+   <!-- Office -->
+   <tr>
+    <td class="roomName">Office</td>
+    <td>
+     <select class="sourceList" id="office">
+      <option value="AV1">Television</option>
+      <option value="TUNER" selected="selected">Radio</option>
+      <option value="Pandora">Pandora</option>
+      <option value="AV3">Chromecast</option>
+      <option value="PHONO">Record Player</option>
+      <option value="AV2">DVD</option>
+      <option value="AUDIO1">CD</option>
+     </select>
+    </td>
+    <!-- <td>Volume</td> -->
+    <td>
+     <input class="onButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'On' );" value="On"></input>
+     <input class="offButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'Standby' );" value="Off"></input>
+    </td>
+   </tr>
+  </table>
+ </body>
+</html>
