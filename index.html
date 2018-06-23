@@ -6,6 +6,40 @@
   <script>
     // http://192.168.1.215/cgi-bin/tttt.py?zone=Zone_2&source=TUNER&state=Standby
 
+    //-------------------------------------------------------------------------
+    //
+    //-------------------------------------------------------------------------
+    function getInfo( zone ){
+      $.ajax( {
+        url: "/cgi-bin/yamaha.py",
+        type: "GET",
+        data: {
+          action: "get",
+          receiver: "192.168.1.218",
+          zone: zone
+        },
+
+        success: function( data ){
+          console.log( "success: " + data );
+          // var msg = "Zone: " + data[ "zone" ] + " is set to " + data[ "source" ] + " and is " + data[ "power" ];
+          var msg = "Zone: " + data.zone + " is set to " + data.source + " and is " + data.power;
+          alert( msg );
+        },
+
+        complete: function() {
+          console.log( "complete." );
+        },
+
+        error: function() {
+          alert( "Some sort of failure." );
+        }
+
+      } );
+    }
+
+    //-------------------------------------------------------------------------
+    //
+    //-------------------------------------------------------------------------
     function onOrOff( id, zone, state ){
 
       var selector = document.getElementById( id );
@@ -16,6 +50,7 @@
         url: "/cgi-bin/yamaha.py",
         type: "GET",
         data: {
+          action: "set",
           receiver: "192.168.1.218",
           zone: zone,
           source: source,
@@ -37,6 +72,9 @@
       } );
     }
 
+    //-------------------------------------------------------------------------
+    //
+    //-------------------------------------------------------------------------
     function test( on_or_off ){
       alert( "testing!" );
       $.ajax( {
@@ -59,6 +97,17 @@
         }
       } );
     }
+
+    //-------------------------------------------------------------------------
+    //
+    //-------------------------------------------------------------------------
+    $( document ).ready(function() {
+      console.log( "ready!" );
+      getInfo( 'Main_Zone' );
+      getInfo( 'Zone_2' );
+      getInfo( 'Zone_3' );
+      getInfo( 'Zone_4' );
+    });
 
   </script>
  <head>
