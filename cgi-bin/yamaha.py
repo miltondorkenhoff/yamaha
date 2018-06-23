@@ -5,6 +5,8 @@ import sys
 import cgi, cgitb 
 import httplib
 
+import xml.etree.ElementTree as ET
+
 #------------------------------------------------------------------------------
 #
 #------------------------------------------------------------------------------
@@ -65,6 +67,33 @@ def sendCommand( receiverAddress, onOff, zone, source, vol ):
     return ( rc[ 0 ], tmp )
 
 #------------------------------------------------------------------------------
+# Get the info for the indicated zone
+#------------------------------------------------------------------------------
+def getInfo( receiverAddress, zone ):
+    httpServ = httplib.HTTPConnection( receiverAddress, 80 )
+    print >> sys.stderr, "getInfo: created server address is %s" % receiverAddress
+
+    httpServ.connect()
+    print >> sys.stderr, "getInfo: Connected."
+
+    xmlCmd = ( "<YAMAHA_AV cmd=\"GET\"> <%s> <Basic_Status>GetParam</Basic_Status> </%s> </YAMAHA_AV>" % ( zone, zone ) )
+
+    print >> sys.stderr, "getInfo: sending: %s" % xmlCmd
+    rc = httpSender( httpServ, xmlCmd )
+    print >> sys.stderr, "getInfo: Got: %s" % rc[ 1 ]
+
+    httpServ.close()
+
+    tree = ET.fromstring( rc[ 1 ] )
+
+    power = tree.find( zone + "/Basic_Status/Power_Control/Power" )
+    # print power.text
+    source = tree.find( zone + "/Basic_Status/Input/Input_Sel" )
+    # print source.text
+
+    return ( power.text, source.text )
+
+#------------------------------------------------------------------------------
 #
 #------------------------------------------------------------------------------
 def getField( form, name, def_val ):
@@ -83,6 +112,10 @@ def getField( form, name, def_val ):
 # Create instance of FieldStorage 
 form = cgi.FieldStorage() 
 
+# Get the action - either get or set
+action = getField( form, 'action', 'set' )
+print >> sys.stderr, "yamaha: action is '%s'" % action
+
 # Get data from fields
 receiver = getField( form, 'receiver', '192.168.1.218' )
 state = getField( form, 'state', 'Standby' )
@@ -90,7 +123,12 @@ zone = getField( form, 'zone', 'Zone_4' )
 source = getField( form, 'source', 'AV1' )
 volume = 0
 
-rc = sendCommand( receiver, state, zone, source, volume )
-
-print "Content-type:text/plain\r\n\r\n"
-print rc[ 1 ]
+if action == 'set':
+    rc = sendCommand( receiver, state, zone, source, volume )
+    print "Content-type:text/plain\r\n\r\n"
+    print rc[ 1 ]
+else:
+    rc = getInfo( receiver, zone )
+    # print >> sys.stderr, rc
+    print "Content-type:application/json\r\n\r\n"
+    print "{ \"%s\" : [ { \"power\" : \"%s\" }, { \"source\" : \"%s\" } ] }" % ( zone, rc[ 0 ], rc [ 1 ] )
