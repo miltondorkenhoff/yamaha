@@ -22,6 +22,22 @@
     //-------------------------------------------------------------------------
     //
     //-------------------------------------------------------------------------
+    function selectState( name, state ){
+      var on_button = document.getElementById( name + "_on" );
+      var off_button = document.getElementById( name + "_off" );
+
+      if( state == "On" ){
+        on_button.disabled = true;
+        off_button.disabled = false;
+      } else {
+        on_button.disabled = false;
+        off_button.disabled = true;
+      }
+    }
+
+    //-------------------------------------------------------------------------
+    //
+    //-------------------------------------------------------------------------
     function getInfo( zone, id_prefix ){
       $.ajax( {
         url: "/cgi-bin/yamaha.py",
@@ -35,9 +51,10 @@
         success: function( data ){
           console.log( "success: " + data );
           // var msg = "Zone: " + data[ "zone" ] + " is set to " + data[ "source" ] + " and is " + data[ "power" ];
-          var msg = "Zone: " + data.zone + " is set to " + data.source + " and is " + data.power;
-          alert( msg );
+          var msg = "Zone: " + data.zone + "(" + id_prefix + ") is set to " + data.source + " and is " + data.power;
+          console.log( msg );
           selectSource( id_prefix, data.source );
+          selectState( id_prefix, data.power );
         },
 
         complete: function() {
@@ -200,7 +217,7 @@
     <!-- <td>Volume</td> -->
     <td>
      <input id="office_on" class="onButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'On' );" value="On"></input>
-     <input id="office_on" class="offButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'Standby' );" value="Off"></input>
+     <input id="office_off" class="offButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'Standby' );" value="Off"></input>
     </td>
    </tr>
   </table>
