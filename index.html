@@ -7,20 +7,22 @@
     // http://192.168.1.215/cgi-bin/tttt.py?zone=Zone_2&source=TUNER&state=Standby
 
     //-------------------------------------------------------------------------
-    //
+    // Go through all of the options associated with the <select> named name
+    // and select the one labeled 'source'
     //-------------------------------------------------------------------------
     function selectSource( name, source ){
       var el = document.getElementById( name );
       for(i = 0; i < el.options.length; i++ ){
-       if( el.options[i].value == source )
-         el[i].selected = "selected";
-       else 
-         el[i].selected = "";
+        if( el.options[i].value == source ){
+          el[i].selected = "selected";
+        } else  {
+          el[i].selected = "";
+        }
       }
     }
 
     //-------------------------------------------------------------------------
-    //
+    // Enable/disable the on/off buttons
     //-------------------------------------------------------------------------
     function selectState( name, state ){
       var on_button = document.getElementById( name + "_on" );
@@ -36,7 +38,7 @@
     }
 
     //-------------------------------------------------------------------------
-    //
+    // Get the on/off state and currently select source for the given zone
     //-------------------------------------------------------------------------
     function getInfo( zone, id_prefix ){
       $.ajax( {
@@ -50,9 +52,10 @@
 
         success: function( data ){
           console.log( "success: " + data );
-          // var msg = "Zone: " + data[ "zone" ] + " is set to " + data[ "source" ] + " and is " + data[ "power" ];
           var msg = "Zone: " + data.zone + "(" + id_prefix + ") is set to " + data.source + " and is " + data.power;
           console.log( msg );
+
+          // Update the UI to match the source/power state
           selectSource( id_prefix, data.source );
           selectState( id_prefix, data.power );
         },
@@ -69,7 +72,7 @@
     }
 
     //-------------------------------------------------------------------------
-    //
+    // Set the source for a zone and turn it on or off
     //-------------------------------------------------------------------------
     function onOrOff( id, zone, state ){
 
@@ -90,6 +93,7 @@
 
         success: function( data ){
           console.log( "success: " + data );
+          getInfo( zone, id );
         },
 
         complete: function() {
