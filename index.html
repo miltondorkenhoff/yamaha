@@ -8,6 +8,10 @@
     // http://192.168.1.215/cgi-bin/tttt.py?zone=Zone_2&source=TUNER&state=Standby
 
     //-------------------------------------------------------------------------
+    // Keep track of the different zone states
+    var zone_states = {};
+
+    //-------------------------------------------------------------------------
     // Go through all of the options associated with the <select> named name
     // and select the one labeled 'source'
     //-------------------------------------------------------------------------
@@ -55,6 +59,9 @@
           console.log( "success: " + data );
           var msg = "Zone: " + data.zone + "(" + id_prefix + ") is set to " + data.source + " and is " + data.power;
           console.log( msg );
+
+          // Save the state of this zone in the array of zones..
+          zone_states[ data.zone ] = data.power;
 
           // Update the UI to match the source/power state
           selectSource( id_prefix, data.source );
@@ -137,6 +144,22 @@
     //-------------------------------------------------------------------------
     //
     //-------------------------------------------------------------------------
+    function selectChanged( e, zone ){
+      console.log( "Select changed: " );
+      var id = e.srcElement.id;
+      console.log( "selected is " + id );
+      console.log( zone_states );
+      console.log( "current state is " + zone_states[ zone ] );
+      if( zone_states[ zone ] == "On" ){
+        onOrOff( id, zone, zone_states[ zone] );
+      } else {
+        console.log( "selectChanged: ignoring change for " + zone );
+      }
+    }
+
+    //-------------------------------------------------------------------------
+    //
+    //-------------------------------------------------------------------------
     $( document ).ready(function() {
       console.log( "ready!" );
       getInfo( 'Main_Zone', 'livingRoom' );
@@ -167,7 +190,7 @@
    <tr>
     <td class="roomName">Living Room</td>
     <td>
-     <select class="sourceList" id="livingRoom">
+     <select class="sourceList" id="livingRoom" onchange="selectChanged( event, 'Main_Zone' );">
       <option value="AV1" selected="selected">Television</option>
       <option value="TUNER">Radio</option>
       <option value="Pandora">Pandora</option>
@@ -188,7 +211,7 @@
    <tr>
     <td class="roomName">Kitchen</td>
     <td>
-     <select class="sourceList" id="kitchen">
+     <select class="sourceList" id="kitchen" onchange="selectChanged( event, 'Zone_3' );">
       <option value="AV1">Television</option>
       <option value="TUNER" selected="selected">Radio</option>
       <option value="Pandora">Pandora</option>
@@ -209,7 +232,7 @@
    <tr>
     <td class="roomName">Office</td>
     <td>
-     <select class="sourceList" id="office">
+     <select class="sourceList" id="office" onchange="selectChanged( event, 'Zone_2' );">
       <option value="AV1">Television</option>
       <option value="TUNER" selected="selected">Radio</option>
       <option value="Pandora">Pandora</option>
