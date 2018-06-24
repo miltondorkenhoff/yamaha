@@ -9,7 +9,20 @@
     //-------------------------------------------------------------------------
     //
     //-------------------------------------------------------------------------
-    function getInfo( zone ){
+    function selectSource( name, source ){
+      var el = document.getElementById( name );
+      for(i = 0; i < el.options.length; i++ ){
+       if( el.options[i].value == source )
+         el[i].selected = "selected";
+       else 
+         el[i].selected = "";
+      }
+    }
+
+    //-------------------------------------------------------------------------
+    //
+    //-------------------------------------------------------------------------
+    function getInfo( zone, id_prefix ){
       $.ajax( {
         url: "/cgi-bin/yamaha.py",
         type: "GET",
@@ -24,6 +37,7 @@
           // var msg = "Zone: " + data[ "zone" ] + " is set to " + data[ "source" ] + " and is " + data[ "power" ];
           var msg = "Zone: " + data.zone + " is set to " + data.source + " and is " + data.power;
           alert( msg );
+          selectSource( id_prefix, data.source );
         },
 
         complete: function() {
@@ -103,10 +117,10 @@
     //-------------------------------------------------------------------------
     $( document ).ready(function() {
       console.log( "ready!" );
-      getInfo( 'Main_Zone' );
-      getInfo( 'Zone_2' );
-      getInfo( 'Zone_3' );
-      getInfo( 'Zone_4' );
+      getInfo( 'Main_Zone', 'livingRoom' );
+      getInfo( 'Zone_2', 'office' );
+      getInfo( 'Zone_3', 'kitchen' );
+      // getInfo( 'Zone_4' );
     });
 
   </script>
@@ -143,8 +157,8 @@
     </td>
     <!-- <td>Volume</td> -->
     <td>
-     <input class="onButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'On' );" value="On"></input>
-     <input class="offButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'Standby' );" value="Off"></input>
+     <input id="livingRoom_on" class="onButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'On' );" value="On"></input>
+     <input id="livingRoom_off" class="offButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'Standby' );" value="Off"></input>
     </td>
    </tr>
 
@@ -164,8 +178,8 @@
     </td>
     <!-- <td>Volume</td> -->
     <td>
-     <input class="onButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'On' );" value="On"></input>
-     <input class="offButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'Standby' );" value="Off"></input>
+     <input id="kitchen_on" class="onButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'On' );" value="On"></input>
+     <input id="kitchen_off" class="offButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'Standby' );" value="Off"></input>
     </td>
    </tr>
 
@@ -185,8 +199,8 @@
     </td>
     <!-- <td>Volume</td> -->
     <td>
-     <input class="onButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'On' );" value="On"></input>
-     <input class="offButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'Standby' );" value="Off"></input>
+     <input id="office_on" class="onButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'On' );" value="On"></input>
+     <input id="office_on" class="offButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'Standby' );" value="Off"></input>
     </td>
    </tr>
   </table>
