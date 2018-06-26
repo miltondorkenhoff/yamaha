@@ -132,4 +132,4 @@ else:
     # print >> sys.stderr, rc
     print "Content-type:application/json\r\n\r\n"
     # print "{ \"results\" : [ { \"name\" : \"%s\" }, { \"power\" : \"%s\" }, { \"source\" : \"%s\" } ] }" % ( zone, rc[ 0 ], rc [ 1 ] )
-    print "{ \"zone\" : \"%s\", \"power\" : \"%s\", \"source\" : \"%s\" }" % ( zone, rc[ 0 ], rc [ 1 ] )
+    print "{ \"zone\" : \"%s\", \"power\" : \"%s\", \"source\" : \"%s\", \"volume\" : %s, \"exp\" : %s }" % ( zone, rc[ 0 ], rc [ 1 ], rc[ 2 ], rc[ 3 ] )
