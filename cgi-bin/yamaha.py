@@ -87,11 +87,11 @@ def getInfo( receiverAddress, zone ):
     tree = ET.fromstring( rc[ 1 ] )
 
     power = tree.find( zone + "/Basic_Status/Power_Control/Power" )
-    # print power.text
     source = tree.find( zone + "/Basic_Status/Input/Input_Sel" )
-    # print source.text
+    level = tree.find( zone + "/Basic_Status/Volume/Lvl/Val" )
+    scale = tree.find( zone + "/Basic_Status/Volume/Lvl/Exp" )
 
-    return ( power.text, source.text )
+    return ( power.text, source.text, level.text, scale.text )
 
 #------------------------------------------------------------------------------
 #
