@@ -160,12 +160,24 @@
     //-------------------------------------------------------------------------
     //
     //-------------------------------------------------------------------------
-    $( document ).ready(function() {
-      console.log( "ready!" );
+    function updateControls(){
       getInfo( 'Main_Zone', 'livingRoom' );
       getInfo( 'Zone_2', 'office' );
       getInfo( 'Zone_3', 'kitchen' );
       // getInfo( 'Zone_4' );
+    }
+
+    //-------------------------------------------------------------------------
+    //
+    //-------------------------------------------------------------------------
+    $( document ).ready(function() {
+      console.log( "ready!" );
+
+      // Set the buttons/selectors the first time
+      updateControls();
+
+      // And set a timer so they are updated periodically as well
+      setInterval( updateControls, 5000 );
     });
 
   </script>
@@ -181,7 +193,7 @@
     <tr>
      <td>Room</td>
      <td>Source</td>
-     <!-- <td>Volume</td> -->
+     <td>Volume</td>
      <td>On/Off</td>
     </td>
    </thead>
@@ -200,7 +212,7 @@
       <option value="AUDIO1">CD</option>
      </select>
     </td>
-    <!-- <td>Volume</td> -->
+    <td><input id="livingRoom_vol" type="range" min="1" max="100" value="50"></td>
     <td>
      <input id="livingRoom_on" class="onButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'On' );" value="On"></input>
      <input id="livingRoom_off" class="offButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'Standby' );" value="Off"></input>
@@ -221,7 +233,7 @@
       <option value="AUDIO1">CD</option>
      </select>
     </td>
-    <!-- <td>Volume</td> -->
+    <td><input id="kitchen_vol" type="range" min="1" max="100" value="50"></td>
     <td>
      <input id="kitchen_on" class="onButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'On' );" value="On"></input>
      <input id="kitchen_off" class="offButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'Standby' );" value="Off"></input>
@@ -242,7 +254,7 @@
       <option value="AUDIO1">CD</option>
      </select>
     </td>
-    <!-- <td>Volume</td> -->
+    <td><input id="office_vol" type="range" min="1" max="100" value="50"></td>
     <td>
      <input id="office_on" class="onButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'On' );" value="On"></input>
      <input id="office_off" class="offButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'Standby' );" value="Off"></input>
