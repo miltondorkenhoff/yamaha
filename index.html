@@ -17,7 +17,9 @@
     function setVolume( name, val, exp ){
       val= ( -1 * val ) / 10;
       var el = document.getElementById( name + "_vol" );
+      var ell = document.getElementById( name + "_label" );
       el.value = val;
+      ell.innerHTML = "&nbsp;" + el.value;
     }
 
 
@@ -155,6 +157,17 @@
     //-------------------------------------------------------------------------
     //
     //-------------------------------------------------------------------------
+    function volumeChanged( e, prefix ){
+      console.log( "volume changed: " + prefix);
+      var el = document.getElementById( prefix + "_vol" );
+      var ell = document.getElementById( prefix + "_label" );
+      console.log( "Val: " + el.value );
+      ell.innerHTML = "&nbsp;" + el.value;
+    }
+
+    //-------------------------------------------------------------------------
+    //
+    //-------------------------------------------------------------------------
     function selectChanged( e, zone ){
       console.log( "Select changed: " );
       var id = e.srcElement.id;
@@ -188,7 +201,7 @@
       updateControls();
 
       // And set a timer so they are updated periodically as well
-      setInterval( updateControls, 5000 );
+      // setInterval( updateControls, 5000 );
     });
 
   </script>
@@ -223,7 +236,10 @@
       <option value="AUDIO1">CD</option>
      </select>
     </td>
-    <td><input id="livingRoom_vol" class="slider" type="range" min="1" max="100" value="50"></td>
+    <td>
+     <input id="livingRoom_vol" class="slider" type="range" min="0" max="100" value="50" onchange="volumeChanged( event, 'livingRoom' );">
+     <label id="livingRoom_label" for="livingRoom_vol">50</label>
+    </td>
     <td>
      <input id="livingRoom_on" class="onButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'On' );" value="On"></input>
      <input id="livingRoom_off" class="offButton" type="button" onclick="onOrOff( 'livingRoom', 'Main_Zone', 'Standby' );" value="Off"></input>
@@ -244,7 +260,10 @@
       <option value="AUDIO1">CD</option>
      </select>
     </td>
-    <td><input id="kitchen_vol" class="slider" type="range" min="1" max="100" value="50"></td>
+    <td>
+     <input id="kitchen_vol" class="slider" type="range" min="0" max="100" value="50" onchange="volumeChanged( event, 'kitchen' );">
+     <label id="kitchen_label" for="kitchen_vol">50</label>
+    </td>
     <td>
      <input id="kitchen_on" class="onButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'On' );" value="On"></input>
      <input id="kitchen_off" class="offButton" type="button" onclick="onOrOff( 'kitchen', 'Zone_3', 'Standby' );" value="Off"></input>
@@ -265,7 +284,10 @@
       <option value="AUDIO1">CD</option>
      </select>
     </td>
-    <td><input id="office_vol" class="slider" type="range" min="1" max="100" value="50"></td>
+    <td>
+     <input id="office_vol" class="slider" type="range" min="0" max="100" value="50" onchange="volumeChanged( event, 'office' );">
+     <label id="office_label" for="office_vol">50</label>
+    </td>
     <td>
      <input id="office_on" class="onButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'On' );" value="On"></input>
      <input id="office_off" class="offButton" type="button" onclick="onOrOff( 'office', 'Zone_2', 'Standby' );" value="Off"></input>
