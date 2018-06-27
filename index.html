@@ -168,7 +168,7 @@
     //-------------------------------------------------------------------------
     // callback for volume changed
     //-------------------------------------------------------------------------
-    function volumeChanged( e, prefix, zone ){
+    function volumeChanged( e, prefix, zone, doit ){
       console.log( "volume changed: " + prefix);
       var el = document.getElementById( prefix + "_vol" );
       var ell = document.getElementById( prefix + "_label" );
@@ -176,7 +176,7 @@
       ell.innerHTML = "&nbsp;" + el.value;
 
       // if the zone is on, adjust its volume.
-      if( zone_states[ zone ] == "On" ){
+      if( ( zone_states[ zone ] ) == "On" && ( doit == true ) ){
         var newVol = getVolumeLevel( prefix );
         console.log( "updating the volume; the new volume is " + newVol );
       } else {
@@ -256,7 +256,8 @@
      </select>
     </td>
     <td>
-     <input id="livingRoom_vol" class="slider" type="range" min="0" max="100" value="50" onchange="volumeChanged( event, 'livingRoom', 'Main_Zone' );">
+     <input id="livingRoom_vol" class="slider" type="range" min="0" max="100" value="50"
+       oninput="volumeChanged( event, 'livingRoom', 'Main_Zone', false );"  onchange="volumeChanged( event, 'livingRoom', 'Main_Zone', true );">
      <label id="livingRoom_label" for="livingRoom_vol">50</label>
     </td>
     <td>
@@ -280,7 +281,8 @@
      </select>
     </td>
     <td>
-     <input id="kitchen_vol" class="slider" type="range" min="0" max="100" value="50" onchange="volumeChanged( event, 'kitchen', 'Zone_3' );">
+     <input id="kitchen_vol" class="slider" type="range" min="0" max="100" value="50"
+       oninput="volumeChanged( event, 'kitchen', 'Zone_3', false );" onchange="volumeChanged( event, 'kitchen', 'Zone_3', true );">
      <label id="kitchen_label" for="kitchen_vol">50</label>
     </td>
     <td>
@@ -304,7 +306,8 @@
      </select>
     </td>
     <td>
-     <input id="office_vol" class="slider" type="range" min="0" max="100" value="50" onchange="volumeChanged( event, 'office','Zone_2' );">
+     <input id="office_vol" class="slider" type="range" min="0" max="100" value="50"
+       oninput="volumeChanged( event, 'office', 'Zone_2', false );" onchange="volumeChanged( event, 'office','Zone_2', true );">
      <label id="office_label" for="office_vol">50</label>
     </td>
     <td>
