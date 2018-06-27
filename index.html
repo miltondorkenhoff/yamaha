@@ -155,7 +155,7 @@
     }
 
     //-------------------------------------------------------------------------
-    //
+    // callback for volume changed
     //-------------------------------------------------------------------------
     function volumeChanged( e, prefix ){
       console.log( "volume changed: " + prefix);
@@ -163,6 +163,8 @@
       var ell = document.getElementById( prefix + "_label" );
       console.log( "Val: " + el.value );
       ell.innerHTML = "&nbsp;" + el.value;
+
+      console.log( "if this zone was turned on, we would have to set the volume now." );
     }
 
     //-------------------------------------------------------------------------
@@ -201,7 +203,7 @@
       updateControls();
 
       // And set a timer so they are updated periodically as well
-      // setInterval( updateControls, 5000 );
+      setInterval( updateControls, 5000 );
     });
 
   </script>
