@@ -15,8 +15,8 @@
     // Get the value of the volume slider and convert it to something that the
     // receiver can use
     //-------------------------------------------------------------------------
-    function getVolumeLevel( name ){
-      var el = document.getElementById( name + "_vol" );
+    function getVolumeLevel( element_prefix ){
+      var el = document.getElementById( element_prefix + "_vol" );
       var vol = el * -100;
       console.log( "Volume will be set to " + vol );
       return vol;
@@ -25,10 +25,10 @@
     //-------------------------------------------------------------------------
     // Update the volume UI control
     //-------------------------------------------------------------------------
-    function setVolume( name, val, exp ){
+    function setVolume( element_prefix, val, exp ){
       val= ( -1 * val ) / 10;
-      var el = document.getElementById( name + "_vol" );
-      var ell = document.getElementById( name + "_label" );
+      var el = document.getElementById( element_prefix + "_vol" );
+      var ell = document.getElementById( element_prefix + "_label" );
       el.value = val;
       ell.innerHTML = "&nbsp;" + el.value;
     }
@@ -52,9 +52,9 @@
     //-------------------------------------------------------------------------
     // Enable/disable the on/off buttons
     //-------------------------------------------------------------------------
-    function selectState( name, state ){
-      var on_button = document.getElementById( name + "_on" );
-      var off_button = document.getElementById( name + "_off" );
+    function selectState( element_prefix, state ){
+      var on_button = document.getElementById( element_prefix + "_on" );
+      var off_button = document.getElementById( element_prefix + "_off" );
 
       if( state == "On" ){
         on_button.disabled = true;
@@ -68,7 +68,7 @@
     //-------------------------------------------------------------------------
     // Get the on/off state and currently select source for the given zone
     //-------------------------------------------------------------------------
-    function getInfo( zone, id_prefix ){
+    function getInfo( zone, element_prefix ){
       $.ajax( {
         url: "/cgi-bin/yamaha.py",
         type: "GET",
@@ -80,16 +80,16 @@
 
         success: function( data ){
           console.log( "success: " + data );
-          var msg = "Zone: " + data.zone + "(" + id_prefix + ") is set to " + data.source + " and is " + data.power;
+          var msg = "Zone: " + data.zone + "(" + element_prefix + ") is set to " + data.source + " and is " + data.power;
           console.log( msg );
 
           // Save the state of this zone in the array of zones..
           zone_states[ data.zone ] = data.power;
 
           // Update the UI to match the source/power state
-          selectSource( id_prefix, data.source );
-          selectState( id_prefix, data.power );
-          setVolume( id_prefix, data.volume, data.exp );
+          selectSource( element_prefix, data.source );
+          selectState( element_prefix, data.power );
+          setVolume( element_prefix, data.volume, data.exp );
         },
 
         complete: function() {
@@ -106,11 +106,13 @@
     //-------------------------------------------------------------------------
     // Set the source for a zone and turn it on or off
     //-------------------------------------------------------------------------
-    function onOrOff( id, zone, state ){
+    function onOrOff( element_prefix, zone, state ){
 
-      var selector = document.getElementById( id );
+      var selector = document.getElementById( element_prefix );
       var source = selector.options[ selector.selectedIndex ].value
       console.log( "Changing " + zone + " to " + source + ", and " + state );
+
+      var vol = getVolumeLevel( element_prefix );
 
       $.ajax( {
         url: "/cgi-bin/yamaha.py",
@@ -120,12 +122,13 @@
           receiver: "192.168.1.218",
           zone: zone,
           source: source,
-          state: state
+          state: state,
+          volume: vol
         },
 
         success: function( data ){
           console.log( "success: " + data );
-          getInfo( zone, id );
+          getInfo( zone, element_prefix );
         },
 
         complete: function() {
@@ -168,17 +171,24 @@
     //-------------------------------------------------------------------------
     // callback for volume changed
     //-------------------------------------------------------------------------
-    function volumeChanged( e, prefix, zone, doit ){
-      console.log( "volume changed: " + prefix);
-      var el = document.getElementById( prefix + "_vol" );
-      var ell = document.getElementById( prefix + "_label" );
+    function volumeChanged( ev, element_prefix, zone, doit ){
+      console.log( "volume changed: " + element_prefix);
+
+      var el = document.getElementById( element_prefix + "_vol" );
+      var ell = document.getElementById( element_prefix + "_label" );
+
       console.log( "Val: " + el.value );
+
+      // update the label
       ell.innerHTML = "&nbsp;" + el.value;
 
       // if the zone is on, adjust its volume.
       if( ( zone_states[ zone ] ) == "On" && ( doit == true ) ){
         var newVol = getVolumeLevel( prefix );
         console.log( "updating the volume; the new volume is " + newVol );
+
+        // call onOrOff which will send the volume request
+        onOrOff( element_prefix, zone, zone_states[ zone ] );
       } else {
         console.log( "Ignoring volume change for zone that is turned off." );
       }
@@ -187,9 +197,9 @@
     //-------------------------------------------------------------------------
     //
     //-------------------------------------------------------------------------
-    function selectChanged( e, zone ){
+    function selectChanged( ev, zone ){
       console.log( "Select changed: " );
-      var id = e.srcElement.id;
+      var id = ev.srcElement.id;
       console.log( "selected is " + id );
       console.log( zone_states );
       console.log( "current state is " + zone_states[ zone ] );
