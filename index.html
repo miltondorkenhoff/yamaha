@@ -16,9 +16,10 @@
     // receiver can use
     //-------------------------------------------------------------------------
     function getVolumeLevel( element_prefix ){
-      var el = document.getElementById( element_prefix + "_vol" );
-      var vol = el * -100;
+      var el = document.getElementById( element_prefix + "_vol" ).value;
+      var vol = el * -10;
       console.log( "Volume will be set to " + vol );
+      alert( "Volume will be set to " + vol );
       return vol;
     }
 

@@ -122,7 +122,7 @@ state = getField( form, 'state', 'Standby' )
 zone = getField( form, 'zone', 'Zone_4' )
 source = getField( form, 'source', 'AV1' )
 volume = getField( form, 'volume', 340 )
-volume = int( vol )
+volume = int( volume )
 # volume = 0
 
 if action == 'set':
