@@ -121,7 +121,7 @@ receiver = getField( form, 'receiver', '192.168.1.218' )
 state = getField( form, 'state', 'Standby' )
 zone = getField( form, 'zone', 'Zone_4' )
 source = getField( form, 'source', 'AV1' )
-volume = getField( form, 'volume', 340 )
+volume = getField( form, 'volume', -340 )
 volume = int( volume )
 # volume = 0
 
