@@ -64,7 +64,8 @@ def sendCommand( receiverAddress, onOff, zone, source, vol ):
 
     httpServ.close()
 
-    return ( rc[ 0 ], tmp )
+    return ( tmp )
+    # return ( rc[ 0 ], tmp )
 
 #------------------------------------------------------------------------------
 # Set the volume of a zone
@@ -155,12 +156,12 @@ volume = int( volume )
 if action == 'set':
     rc = sendCommand( receiver, state, zone, source, volume )
     print "Content-type:text/plain\r\n\r\n"
-    print rc[ 1 ]
+    print "Results from set command were: %s" % rc
 elif action == 'volume':
     print >> sys.stderr, "request type is volume change."
     rc = setZoneVolume( receiver, zone, source, volume )
-    print "Content-type:application/xml\r\n\r\n"
-    print rc[ 1 ]
+    print "Content-type:text/plain\r\n\r\n"
+    print "Results from volume command were: %s" % rc
 else:
     rc = getInfo( receiver, zone )
     # print >> sys.stderr, rc

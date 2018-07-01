@@ -60,6 +60,7 @@ td { font-family: Arial, sans-serif; font-size: 110%;
   opacity: 0.7;
   -webkit-transition: .2s;
   transition: opacity .2s;
+  direction: rtl;
 }
 
 .slider:hover {
