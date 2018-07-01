@@ -179,6 +179,9 @@
       var el = document.getElementById( element_prefix + "_vol" );
       var ell = document.getElementById( element_prefix + "_label" );
 
+      var selector = document.getElementById( element_prefix );
+      var source = selector.options[ selector.selectedIndex ].value
+
       console.log( "Val: " + el.value );
 
       // update the label
@@ -191,7 +194,7 @@
       // if the zone is on, adjust its volume.
       if( ( zone_states[ zone ] ) == "On" && ( doit == true ) ){
 
-        var newVol = getVolumeLevel( prefix );
+        var newVol = getVolumeLevel( element_prefix );
         console.log( "updating the volume; the new volume is " + newVol );
 
         // Set the volume via ajax call
