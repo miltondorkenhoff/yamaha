@@ -157,8 +157,9 @@ if action == 'set':
     print "Content-type:text/plain\r\n\r\n"
     print rc[ 1 ]
 elif action == 'volume':
+    print >> sys.stderr, "request type is volume change."
     rc = setZoneVolume( receiver, zone, source, volume )
-    print "Content-type:text/plain\r\n\r\n"
+    print "Content-type:application/xml\r\n\r\n"
     print rc[ 1 ]
 else:
     rc = getInfo( receiver, zone )
