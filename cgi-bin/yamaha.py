@@ -46,7 +46,7 @@ def sendCommand( receiverAddress, onOff, zone, source, vol ):
     # Save the output from the first command
     tmp = rc[ 1 ]
 
-    if source != "" and onOff == "On":
+    if 0 == 1 and source != "" and onOff == "On":
         if vol == 0:
             volString = ""
         else:
@@ -55,7 +55,7 @@ def sendCommand( receiverAddress, onOff, zone, source, vol ):
         # print >> sys.stderr, "sendCommand: Volume string: %s" % volString
 
         xmlCmd = ( "<YAMAHA_AV cmd=\"PUT\"> <%s> <Input> <Input_Sel>%s</Input_Sel> </Input> %s </%s> </YAMAHA_AV>" % ( zone, source, volString, zone ) )
-        print >> sys.stderr, "sendCommand: sending: %s" % xmlCmd
+        print >> sys.stderr, "sendCommand: VOLUME: sending: %s" % xmlCmd
         rc = httpSender( httpServ, xmlCmd )
 
         tmp = tmp + '\n' + rc[ 1 ]
@@ -65,6 +65,33 @@ def sendCommand( receiverAddress, onOff, zone, source, vol ):
     httpServ.close()
 
     return ( rc[ 0 ], tmp )
+
+#------------------------------------------------------------------------------
+# Set the volume of a zone
+#------------------------------------------------------------------------------
+def setZoneVolume( receiverAddress, zone, source, vol ):
+    print >> sys.stderr, "setZoneVolume: Zone: %s, Source: %s, Volume: %d" % ( zone, source, vol )
+
+    httpServ = httplib.HTTPConnection( receiverAddress, 80 )
+    print >> sys.stderr, "setZoneVolume: created server address is %s" % receiverAddress
+
+    httpServ.connect()
+    print >> sys.stderr, "setZoneVolume: Connected."
+
+    volString = "<Volume><Lvl><Val>%d</Val><Exp>1</Exp><Unit>dB</Unit></Lvl></Volume>" % vol
+
+    print >> sys.stderr, "setZoneVolume: Volume string: %s" % volString
+
+    xmlCmd = ( "<YAMAHA_AV cmd=\"PUT\"> <%s> <Input> <Input_Sel>%s</Input_Sel> </Input> %s </%s> </YAMAHA_AV>" % ( zone, source, volString, zone ) )
+    print >> sys.stderr, "setZoneVolume: VOLUME: sending: %s" % xmlCmd
+    rc = httpSender( httpServ, xmlCmd )
+
+    print >> sys.stderr, "setZoneVolume: complete, rc: %d, result: %s" % ( rc[ 0 ], rc[ 1 ] )
+
+    httpServ.close()
+
+    return ( rc[ 1 ] )
+
 
 #------------------------------------------------------------------------------
 # Get the info for the indicated zone
@@ -127,6 +154,10 @@ volume = int( volume )
 
 if action == 'set':
     rc = sendCommand( receiver, state, zone, source, volume )
+    print "Content-type:text/plain\r\n\r\n"
+    print rc[ 1 ]
+elif action == 'volume':
+    rc = setZoneVolume( receiver, zone, source, volume )
     print "Content-type:text/plain\r\n\r\n"
     print rc[ 1 ]
 else:
