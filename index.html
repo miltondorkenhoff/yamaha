@@ -187,9 +187,9 @@
       // update the label
       ell.innerHTML = "&nbsp;" + el.value;
 
-      if( doit == true ){
-          // alert("zone state is " + zone_states[ zone ] + " " + zone );
-      }
+      // Set doit to true so that we change the volume as the slider is
+      // being slid.
+      doit = true;
 
       // if the zone is on, adjust its volume.
       if( ( zone_states[ zone ] ) == "On" && ( doit == true ) ){
