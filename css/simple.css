@@ -23,28 +23,32 @@ td { font-family: Arial, sans-serif; font-size: 110%;
 
 .roomName {
   font-family: Arial, sans-serif;
-  font-size: 200%;
+  font-size: 150%;
 }
 
 .onButton {
   background-color: #44ff44;
-  font-size: 200%;
+  font-size: 150%;
   border-radius: 10px;
   width: 40%;
 }
 
 .offButton {
   background-color: #ff4444;
-  font-size: 200%;
+  font-size: 150%;
   border-radius: 10px;
   width: 40%;
 }
 
 .sourceList {
   background-color: #eeddcc;
-  font-size: 200%;
+  font-size: 150%;
   border-radius: 10px;
   width: 60%;
+}
+
+.volume_class {
+    width: 35%;
 }
 
 .slidecontainer {
@@ -53,7 +57,7 @@ td { font-family: Arial, sans-serif; font-size: 110%;
 
 .slider {
   -webkit-appearance: none;
-  owidth: 40%;
+  width: 80%;
   height: 25px;
   background: #d3d3d3;
   outline: none;
