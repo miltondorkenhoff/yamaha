@@ -46,7 +46,7 @@ def sendCommand( receiverAddress, onOff, zone, source, vol ):
     # Save the output from the first command
     tmp = rc[ 1 ]
 
-    if 0 == 1 and source != "" and onOff == "On":
+    if source != "" and onOff == "On":
         if vol == 0:
             volString = ""
         else:
@@ -154,6 +154,7 @@ volume = int( volume )
 # volume = 0
 
 if action == 'set':
+    print >> sys.stderr, "request type is set something."
     rc = sendCommand( receiver, state, zone, source, volume )
     print "Content-type:text/plain\r\n\r\n"
     print "Results from set command were: %s" % rc
