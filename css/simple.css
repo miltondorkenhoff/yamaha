@@ -74,16 +74,16 @@ td { font-family: Arial, sans-serif; font-size: 110%;
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 35px;
-  height: 35px;
+  width: 50px;
+  height: 30px;
   background: #ff3344;
   cursor: pointer;
   border-radius: 20px;
 }
 
 .slider::-moz-range-thumb {
-  width: 35px;
-  height: 35px;
+  width: 50px;
+  height: 30px;
   background: #fCAF50;
   cursor: pointer;
   border-radius: 20px;
